@@ -58,10 +58,10 @@ for u,v in G.edges():
             total = count_uv + count_vu
             ping_stats.append((u, v, total))
 
-print("\nTop ping-pong pairs by total transactions:")
-ping_stats = sorted(ping_stats, key=lambda x: x[2], reverse=True)
-for u, v, total in ping_stats[:30]:
-    print(u, "<->", v, "total tx:", total)
+#print("\nTop ping-pong pairs by total transactions:")
+#ping_stats = sorted(ping_stats, key=lambda x: x[2], reverse=True)
+#for u, v, total in ping_stats[:30]:
+#    print(u, "<->", v, "total tx:", total)
 
 
 
@@ -79,6 +79,33 @@ for u, v, total in ping_stats[:30]:
 # print("\nTop 10 Receivers:")
 # for addr, deg in top_receivers:
 #     print(addr, deg)
+
+sent_counts= df['from_address'].value_counts()
+print((sent_counts > 10000).sum())
+#categories = {
+ #   "51-100": ((sent_counts >= 51) & (sent_counts <= 100)).sum(),
+  #  "100-1000": ((sent_counts >= 100) & (sent_counts <= 1000)).sum(),
+   # "1000-10000": ((sent_counts >= 1000) & (sent_counts <= 10000)).sum(),
+    #"10000+": (sent_counts > 10000).sum()
+#}
+
+#plt.figure(figsize=(10,6))
+#plt.bar(categories.keys(), categories.values())
+
+#plt.xlabel("Transactions Sent")
+#plt.ylabel("Number of Wallets")
+#plt.title("Wallet Activity Categories")
+
+#plt.show()
+
+
+
+#==========================================================================================================================
+
+
+
+
+
 
 
 
