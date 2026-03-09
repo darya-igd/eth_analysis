@@ -1,5 +1,6 @@
 from src.data_loader import load_transactions
 
+import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 
@@ -72,31 +73,65 @@ for u,v in G.edges():
 # for u,v, data in edges_count:
 #     print(u, "->", v, "count=", data['count'], "sum_value=", data['sum_value'])
 
-# print("\nTop 10 Senders:")
-# for addr, deg in top_senders:
-#     print(addr, deg)
+#print("\nTop 10 Senders:")
+#for addr, deg in top_senders:
+#    print(addr, deg)
 
 # print("\nTop 10 Receivers:")
 # for addr, deg in top_receivers:
 #     print(addr, deg)
 
 sent_counts= df['from_address'].value_counts()
-print((sent_counts > 10000).sum())
-#categories = {
- #   "51-100": ((sent_counts >= 51) & (sent_counts <= 100)).sum(),
-  #  "100-1000": ((sent_counts >= 100) & (sent_counts <= 1000)).sum(),
-   # "1000-10000": ((sent_counts >= 1000) & (sent_counts <= 10000)).sum(),
-    #"10000+": (sent_counts > 10000).sum()
-#}
 
-#plt.figure(figsize=(10,6))
-#plt.bar(categories.keys(), categories.values())
+# categories1 = {
+#     "1": ((sent_counts >= 1) & (sent_counts < 2)).sum(),
+#     "2-5": ((sent_counts >= 2) & (sent_counts <= 5)).sum(),
+#     "6-10": ((sent_counts >= 6) & (sent_counts <= 10)).sum(),
+#     "11-50": ((sent_counts >= 11) & (sent_counts <= 50)).sum()
+# }
 
-#plt.xlabel("Transactions Sent")
-#plt.ylabel("Number of Wallets")
-#plt.title("Wallet Activity Categories")
+# categories2 = {
+#     "51-100": ((sent_counts >= 51) & (sent_counts <= 100)).sum(),
+#     "100-1000": ((sent_counts >= 100) & (sent_counts <= 1000)).sum(),
+#     "1000-10,000": ((sent_counts >= 1000) & (sent_counts <= 10000)).sum(),
+#     "10,000+": (sent_counts > 10000).sum()
+# }
 
-#plt.show()
+
+# fig, axs= plt.subplots(1, 2, figsize=(20,6))
+# axs[0].bar(categories1.keys(), categories1.values())
+# axs[0].set_xlabel("Number of transactions")
+# axs[0].set_ylabel("Number of wallets")
+# axs[0].set_title("Distribution of transactions per wallet (1-50)")
+
+# axs[1].bar(categories2.keys(), categories2.values())
+# axs[1].set_xlabel("Number of transactions")
+# axs[1].set_ylabel("Number of wallets")
+# axs[1].set_title("Distribution of transactions per wallet (51+)")
+# plt.show()
+
+
+
+# sort values
+data = np.sort(sent_counts.values)
+
+# cumulative fraction
+cdf = np.arange(1, len(data) + 1) / len(data)
+
+plt.figure(figsize=(10,6))
+
+plt.plot(data, cdf, linewidth=2)
+
+plt.xscale("log")   # important because transaction counts vary a lot
+
+plt.xlabel("Number of transactions (Log)")
+plt.ylabel("Fraction of wallets")
+plt.title("CDF of Wallet Sending Activity")
+
+plt.grid(True)
+
+plt.show()
+
 
 
 
